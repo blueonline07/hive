@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  files         File[]         @relation("Owner")
+  fileAccess    FileAccess[]
+}
+
+model File {
+  id            String         @id @default(uuid())
+  name          String
+  path          String
+  mimeType      String
+  size          Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  ownerId       String
+  owner         User           @relation("Owner", fields: [ownerId], references: [id])
+  fileAccess    FileAccess[]
+  versions      FileVersion[]
+}
+
+model FileAccess {
+  id            String         @id @default(uuid())
+  fileId        String
+  userId        String
+  permission    Permission
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  file          File           @relation(fields: [fileId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
+
+  @@unique([fileId, userId])
+}
+
+model FileVersion {
+  id            String         @id @default(uuid())
+  fileId        String
+  path          String
+  version       Int
+  createdAt     DateTime       @default(now())
+  file          File           @relation(fields: [fileId], references: [id])
+}
+
+enum Permission {
+  READ
+  WRITE
+}
