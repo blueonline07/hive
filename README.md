@@ -1,157 +1,112 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Weave
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Lightweight implementation of the Weave real-time collaborative file sharing system.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Overview
 
-# Weave - Real-Time Collaborative File Sharing System
+This is a lightweight implementation of the Weave project, which provides:
 
-Weave is a real-time collaborative file sharing and editing system where multiple users can upload, share, and edit content simultaneously.
+- User authentication with JWT
+- File upload and download with MinIO/S3 pre-signed URLs
+- Real-time file collaboration using Socket.io
+- API documentation with Swagger
 
 ## Features
 
-- User authentication (register, login with JWT)
-- File storage and metadata
-- File sharing with permissions (read/write)
-- Real-time collaborative editing with Yjs
-- WebSocket communication
-
-## Technology Stack
-
-- **Backend**: NestJS, TypeScript
-- **Database**: PostgreSQL with Prisma ORM
-- **Object Storage**: MinIO
-- **Real-time Collaboration**: Yjs, Socket.IO
-- **Caching/Pub-Sub**: Redis
+- **User Management**: Sign up, login, profile management with JWT authentication
+- **File Storage**: Upload, download, list, and delete files using MinIO/S3
+- **Real-Time Collaboration**: WebSocket integration for real-time file editing
+- **API Documentation**: Swagger UI for exploring and testing API endpoints
 
 ## Prerequisites
 
-- Node.js (v18+)
-- Docker and Docker Compose
+- Node.js (v14+)
+- PostgreSQL
+- MinIO (or any S3-compatible storage)
+- Redis (for production deployments with multiple nodes)
 
-## Getting Started
+## Installation
 
-### 1. Clone the repository
+1. Clone the repository:
 
 ```bash
 git clone <repository-url>
 cd weave
 ```
 
-### 2. Setup environment variables
-
-The `.env` file should already be created with default values for local development.
-
-### 3. Start the required services
-
-```bash
-docker-compose up -d
-```
-
-This will start PostgreSQL, MinIO, and Redis services.
-
-### 4. Install dependencies
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-### 5. Run database migrations
+3. Copy the environment file and configure it:
 
 ```bash
-npx prisma migrate dev --name init
+cp .env.example .env
+# Edit .env with your configuration
 ```
 
-### 6. Start the application
+4. Set up the Prisma database:
 
 ```bash
-npm run start:dev
+npx prisma generate
+npx prisma migrate dev
 ```
 
-The API will be available at http://localhost:3000.
+## Running the Application
 
-## API Endpoints
+### Development
 
-### Auth
+```bash
+npm run dev
+```
 
-- `POST /auth/register` - Register a new user
-- `POST /auth/login` - Login and get JWT token
+### Production
 
-### Files
+```bash
+npm start
+```
 
-- `POST /files` - Create a new file (get pre-signed URL for upload)
-- `GET /files/:id` - Get file details and download URL
-- `POST /files/:id/share` - Share a file with another user
+## API Documentation
 
-## WebSocket Events
+Once the application is running, you can access the Swagger API documentation at:
 
-Connect to WebSocket at the root endpoint with authentication token in headers.
+```
+http://localhost:3000/api-docs
+```
 
-### Document Collaboration
+## Project Structure
 
-- `join-document` - Join a document collaboration session
-- `sync-update` - Send document updates
-- `update` - Receive document updates
-- `user-connected` - Notification when a user joins
-- `user-disconnected` - Notification when a user leaves
+```
+src/
+├── config/          # Configuration files
+├── controllers/     # Route controllers
+├── middlewares/     # Middlewares
+├── models/          # Prisma client and database models
+├── routes/          # API routes
+├── services/        # Business logic
+├── socket.js        # Socket.io setup
+├── swagger.json     # API documentation
+└── index.js         # Application entry point
+```
+
+## Environment Variables
+
+| Variable              | Description                              | Default                                   |
+|-----------------------|------------------------------------------|-----------------------------------------|
+| PORT                  | Port for the server                      | 3000                                    |
+| NODE_ENV              | Environment (development/production)     | development                             |
+| JWT_SECRET            | Secret key for JWT tokens                | (required)                              |
+| JWT_EXPIRATION_TIME   | JWT token expiration time                | 1d                                      |
+| DATABASE_URL          | PostgreSQL connection string             | (required)                              |
+| MINIO_ENDPOINT        | MinIO server hostname                    | localhost                               |
+| MINIO_PORT            | MinIO server port                        | 9000                                    |
+| MINIO_USE_SSL         | Whether to use SSL for MinIO             | false                                   |
+| MINIO_ACCESS_KEY      | MinIO access key                         | minioadmin                              |
+| MINIO_SECRET_KEY      | MinIO secret key                         | minioadmin                              |
+| MINIO_BUCKET_NAME     | MinIO bucket name                        | weave-files                             |
 
 ## License
 
-MIT
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+[MIT](LICENSE)
