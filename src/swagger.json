@@ -69,10 +69,28 @@
             "type": "string",
             "description": "File MIME type"
           },
+          "bucket": {
+            "type": "string",
+            "description": "Storage bucket name"
+          },
+          "key": {
+            "type": "string",
+            "description": "Storage object key"
+          },
+          "ownerId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the user who owns this file"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "description": "File upload timestamp"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "File last update timestamp"
           }
         }
       },
@@ -330,6 +348,57 @@
         }
       }
     },
+    "/files": {
+      "get": {
+        "summary": "Get all files for the authenticated user",
+        "tags": ["Files"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Files retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/File"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/files/{fileId}": {
       "get": {
         "summary": "Get file information",
@@ -361,78 +430,6 @@
                   "properties": {
                     "file": {
                       "$ref": "#/components/schemas/File"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "File not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/files/{fileId}/url": {
-      "get": {
-        "summary": "Get a pre-signed URL for file download",
-        "tags": ["Files"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "fileId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "ID of the file to get URL for"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "File URL retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "format": "uri",
-                      "description": "Pre-signed download URL (valid for 1 hour)"
                     }
                   }
                 }

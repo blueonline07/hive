@@ -69,3 +69,15 @@ export const getFile = async (fileId) => {
     throw error;
   }
 };
+
+export const getAllFiles = async (userId) => {
+  try {
+    const files = await prisma.file.findMany({
+      where: { ownerId: userId }
+    });
+    return files;
+  } catch (error) {
+    console.error('Error retrieving all files:', error);
+    throw error;
+  }
+};

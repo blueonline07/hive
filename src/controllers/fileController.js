@@ -56,14 +56,32 @@ export const uploadFile = async (req, res) => {
 export const getFile = async (req, res) => {
   try {
     const fileId = req.params.fileId;
+    const userId = req.user.id;
     const file = await fileService.getFile(fileId);
+    
     if (!file) {
       return res.status(404).json({ message: 'File not found' });
     }
-    // TODO: add permission logic here
+    
+    // Check if the file belongs to the current user
+    if (file.ownerId !== userId) {
+      return res.status(403).json({ message: 'Access denied: You do not have permission to view this file' });
+    }
+    
     res.status(200).json({ file });
   } catch (error) {
     console.error('Error in getFile controller:', error);
     res.status(500).json({ message: 'Server error while retrieving file' });
   }
 }
+
+export const getAllFiles = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const files = await fileService.getAllFiles(userId);
+    res.status(200).json({ files });
+  } catch (error) {
+    console.error('Error in getAllFiles controller:', error);
+    res.status(500).json({ message: 'Server error while retrieving all files' });
+  }
+};

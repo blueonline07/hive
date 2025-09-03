@@ -46,4 +46,10 @@ router.get(
   fileController.getFile
 );
 
+router.get(
+  '/',
+  authMiddleware,
+  fileController.getAllFiles
+);
+
 export default router;
