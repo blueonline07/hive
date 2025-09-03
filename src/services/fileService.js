@@ -14,7 +14,8 @@ import { prisma } from '../models/prisma.js';
 export async function uploadFile(fileBuffer, fileName, mimeType, userId) {
   try {
     // Generate a unique object name
-    const objectName = `${uuidv4()}-${fileName}`;
+    const fileId = uuidv4();
+    const objectName = `${fileId}-${fileName}`;
     const bucketName = process.env.MINIO_BUCKET || 'hive-files';
     
     // Ensure bucket exists
@@ -38,6 +39,7 @@ export async function uploadFile(fileBuffer, fileName, mimeType, userId) {
     // Save file metadata to database
     const file = await prisma.file.create({
       data: {
+        id: fileId,
         name: fileName,
         key: objectName,
         mimeType,
@@ -56,6 +58,14 @@ export async function uploadFile(fileBuffer, fileName, mimeType, userId) {
   }
 }
 
-export default {
-  uploadFile
+export const getFile = async (fileId) => {
+  try {
+    const file = await prisma.file.findUnique({
+      where: { id: fileId }
+    });
+    return file;
+  } catch (error) {
+    console.error('Error retrieving file:', error);
+    throw error;
+  }
 };

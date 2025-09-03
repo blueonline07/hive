@@ -40,4 +40,10 @@ router.post(
   fileController.uploadFile
 );
 
+router.get(
+  '/:fileId',
+  authMiddleware,
+  fileController.getFile
+);
+
 export default router;

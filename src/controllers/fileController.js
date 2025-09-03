@@ -53,6 +53,17 @@ export const uploadFile = async (req, res) => {
   }
 };
 
-export default {
-  uploadFile
-};
+export const getFile = async (req, res) => {
+  try {
+    const fileId = req.params.fileId;
+    const file = await fileService.getFile(fileId);
+    if (!file) {
+      return res.status(404).json({ message: 'File not found' });
+    }
+    // TODO: add permission logic here
+    res.status(200).json({ file });
+  } catch (error) {
+    console.error('Error in getFile controller:', error);
+    res.status(500).json({ message: 'Server error while retrieving file' });
+  }
+}
