@@ -1,7 +1,7 @@
 {
-  "name": "weave",
+  "name": "hive",
   "version": "1.0.0",
-  "description": "Lightweight implementation of Weave - Authentication System",
+  "description": "Lightweight implementation of Hive - Authentication System",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

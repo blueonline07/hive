@@ -21,7 +21,7 @@ app.use('/auth', authRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Weave API' });
+  res.json({ message: 'Welcome to Hive API' });
 });
 
 // Error handling middleware

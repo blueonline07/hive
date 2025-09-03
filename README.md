@@ -1,10 +1,10 @@
-# Weave
+# Hive
 
-Lightweight implementation of the Weave real-time collaborative file sharing system.
+Lightweight implementation of the Hive real-time collaborative file sharing system.
 
 ## Overview
 
-This is a lightweight implementation of the Weave project, which provides:
+This is a lightweight implementation of the Hive project, which provides:
 
 - User authentication with JWT
 - File upload and download with MinIO/S3 pre-signed URLs
@@ -31,7 +31,7 @@ This is a lightweight implementation of the Weave project, which provides:
 
 ```bash
 git clone <repository-url>
-cd weave
+cd hive
 ```
 
 2. Install dependencies:
@@ -105,7 +105,7 @@ src/
 | MINIO_USE_SSL         | Whether to use SSL for MinIO             | false                                   |
 | MINIO_ACCESS_KEY      | MinIO access key                         | minioadmin                              |
 | MINIO_SECRET_KEY      | MinIO secret key                         | minioadmin                              |
-| MINIO_BUCKET_NAME     | MinIO bucket name                        | weave-files                             |
+| MINIO_BUCKET_NAME     | MinIO bucket name                        | hive-files                             |
 
 ## License
 

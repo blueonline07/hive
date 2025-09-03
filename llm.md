@@ -1,7 +1,7 @@
-# Weave – Real-Time Collaborative File Sharing System
+# Hive – Real-Time Collaborative File Sharing System
 
 ## 📌 Context
-Weave is a backend project designed to showcase advanced backend development skills beyond CRUD applications. It is a **real-time collaborative file sharing and editing system**, where multiple users can:
+Hive is a backend project designed to showcase advanced backend development skills beyond CRUD applications. It is a **real-time collaborative file sharing and editing system**, where multiple users can:
 - Upload/share files.
 - Edit content simultaneously.
 - Manage permissions (read/write).
@@ -89,11 +89,11 @@ This project demonstrates expertise in **real-time systems, distributed coordina
 
 ---
 
-✅ With this setup, *Weave* highlights skills in:
+✅ With this setup, *Hive* highlights skills in:
 - **Real-time backend dev** (WebSockets, Redis, CRDTs).
 - **Scalable infra** (Docker, K8s, Redis clustering).
 - **Modern TS stack** (NestJS, Prisma, ElasticSearch).
 - **DevOps & observability** (CI/CD, tracing, monitoring).
 
-This ensures *Weave* stands out as a **cool, minimal-feature but tech-heavy project** for a backend portfolio.
+This ensures *Hive* stands out as a **cool, minimal-feature but tech-heavy project** for a backend portfolio.
 
