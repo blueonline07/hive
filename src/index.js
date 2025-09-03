@@ -23,7 +23,7 @@ app.use('/files', fileRoutes);
 
 // Root route
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Hive API' });
+  res.json({ message: 'Welcome to Synapso API' });
 });
 
 // Error handling middleware
@@ -36,7 +36,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

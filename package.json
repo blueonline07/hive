@@ -1,7 +1,7 @@
 {
-  "name": "hive",
+  "name": "synapso",
   "version": "1.0.0",
-  "description": "Lightweight implementation of Hive - Authentication System",
+  "description": "Synapso Backend Application",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

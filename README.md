@@ -1,10 +1,10 @@
-# Hive
+# Synapso
 
-Lightweight implementation of the Hive real-time collaborative file sharing system.
+Lightweight implementation of the Synapso real-time collaborative file sharing system.
 
 ## Overview
 
-This is a lightweight implementation of the Hive project, which provides:
+This is a lightweight implementation of the Synapso project, which provides:
 
 - User authentication with JWT
 - File upload and download with MinIO/S3 pre-signed URLs
