@@ -17,4 +17,42 @@ model User {
   name          String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  ownedFiles    File[]         @relation("OwnedFiles")
+  sharedFiles   FileShare[]
+}
+
+model File {
+  id            String         @id @default(uuid())
+  name          String
+  mimeType      String
+  size          Int
+  key           String
+  bucket        String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  ownerId       String
+  owner         User           @relation(fields: [ownerId], references: [id], name: "OwnedFiles")
+
+  sharedWith    FileShare[]
+  @@unique([key, bucket])
+  @@map("files")
+}
+
+model FileShare {
+  id            String      @id @default(uuid())
+  fileId        String
+  file          File        @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission    Permission  @default(VIEW)
+  sharedAt      DateTime    @default(now())
+  
+  @@unique([fileId, userId])
+  @@map("file_shares")
+}
+
+enum Permission {
+  VIEW
+  EDIT
 }

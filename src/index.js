@@ -6,6 +6,7 @@ import swaggerDocument from './swagger.json' assert { type: 'json' };
 
 // Routes
 import authRoutes from './routes/auth.js';
+import fileRoutes from './routes/files.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/files', fileRoutes);
 
 // Root route
 app.get('/', (req, res) => {

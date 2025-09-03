@@ -12,31 +12,16 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   minio:
-    image: minio/minio:RELEASE.2023-09-23T03-47-50Z
-    restart: always
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+    image: minio/minio
     ports:
-      - "9000:9000"  # API port
-      - "9001:9001"  # Console port
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: your_access_key
+      MINIO_ROOT_PASSWORD: your_secret_key
     volumes:
       - minio_data:/data
-    command: server --console-address ":9001" /data
-
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      - minio
-    restart: on-failure
-    entrypoint: >
-      /bin/sh -c "
-      sleep 5;
-      /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin;
-      /usr/bin/mc mb myminio/hive-files;
-      /usr/bin/mc anonymous set public myminio/hive-files;
-      exit 0;
-      "
+    command: server /data --console-address ":9001"
 
 volumes:
   postgres_data:
